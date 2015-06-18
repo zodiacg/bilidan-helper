@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+    <title>BiliDan-Helper选项页</title>
+    <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="options.js"></script>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="pure-min.css">
+    <style>
+body{width:100%;margin:0px;padding:0px;background-color:#eee;font-family:'Open Sans','Source Sans Pro','Helvetica Neue','Hiragino Kaku Gothic Pro','Microsoft Yahei','Microsoft Jhenghei',sans-serif;font-size:15px;}#header{position:fixed;left:0;right:0;width:100%;margin:0;padding:0;border-bottom:1px solid#bbb;line-height:20px;}.banner{background:#494949;}.pure-menu-heading{color:#ccc;}#content-wrapper{padding:40px 0 0 0;line-height:1.8em;vertical-align:baseline;overflow:hidden;}
+    </style>
+</head>
+<body>
+<div id="header">
+    <div class="banner pure-menu pure-menu-horizontal pure-menu-fixed">
+        <span class="pure-menu-heading">BiliDan-Helper选项</span>
+    </div>
+</div>
+<div id="content-wrapper">
+    <div class="pure-g">
+    <div class="pure-u-1-5"></div>
+    <div class="pure-u-3-5">
+        <form class="opform pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="o_use_cookie">使用Cookies</label>
+                <input id="o_use_cookie" type="checkbox">
+            </div>
+            <div class="pure-control-group">
+                <label for="o_source">视频来源</label>
+                <select id="o_source">
+                    <option>default</option>
+                    <option>html5</option>
+                    <option>overseas</option>
+                    <option>flvcd</option>
+                </select>
+            </div>
+            <div class="pure-control-group">
+                <label for="o_d2aflags">D2A参数</label>
+                <input class="pure-input-2-3" id="o_d2aflags" type="text">
+            </div>
+            <div class="pure-control-group">
+                <label for="o_mpvflags">MPV参数</label>
+                <input class="pure-input-2-3" id="o_mpvflags" type="text">
+            </div>
+            <div class="pure-control-group">
+                <label for="o_quality">视频质量（0为默认）</label>
+                <input id="o_quality" type="text">
+            </div>
+            <div class="pure-controls">
+                <button id="submit" type="submit" class="pure-button pure-button-primary">保存设置</button>
+                <button id="reset" class="pure-button">重置</button>
+            </div>
+        </fieldset>
+        </form>
+    </div>
+    <div class="pure-u-1-5"></div>
+    </div>
+</div>
+</body>
+</html>
