@@ -1,0 +1,9 @@
+{
+  "name": "com.hoodoo.bilidan-helper",
+  "description": "Bilidan-Helper Host",
+  "path": "bilidan-helper-host.bat",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://agdafnaifgfimanjefpehhgiijipggln/"
+  ]
+}
