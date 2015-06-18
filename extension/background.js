@@ -1,6 +1,6 @@
 var defaultOptions = {
     "use_cookie": false,
-    "source": default,
+    "source": "default",
     "d2aflags": "",
     "mpvflags": "",
     "quality": 4
@@ -17,15 +17,43 @@ function setOption(key, value) {
 	localStorage.setItem(key, value);
 }
 
-function open_bilidan(url) {
-    
+function onNativeMessage(message) {
+  console.log("Received message: <b>" + JSON.stringify(message) + "</b>");
 }
+
+function onDisconnected() {
+  console.log("Failed to connect: " + chrome.runtime.lastError.message);
+  port = null;
+}
+
+function open_bilidan(url,cookie) {
+	console.log("invoked open");
+	bilidan_args={
+		"use_cookie": getOption("use_cookie"),
+		"cookie": cookie,
+		"source": getOption("source"),
+		"d2aflags": getOption("d2aflags"),
+		"mpvflags": getOption("mpvflags"),
+		"quality": getOption("quality"),
+		"url": url
+	};
+
+    
+    chrome.runtime.sendNativeMessage("com.hoodoo.bilidanhelper",
+		bilidan_args,
+		function(response){
+			console.log("Bilidan-Helper Host returned: " + response);
+		});
+};
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.command) {
+		case 'init':
+			sendResponse({"use_cookie" : getOption("use_cookie")});
+			return true;
         case 'open':
-            open_bilidan(request.url);
-            return ture;
+            open_bilidan(request.url,request.cookie);
+            return true;
         default:
             return false;
     }

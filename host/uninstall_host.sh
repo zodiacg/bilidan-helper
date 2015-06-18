@@ -16,6 +16,6 @@ else
     TARGET_DIR="$HOME/.config/google-chrome/NativeMessagingHosts"
   fi
 fi
-HOST_NAME=com.hoodoo.bilidan-helper
+HOST_NAME=com.hoodoo.bilidanhelper
 rm "$TARGET_DIR/$HOST_NAME.json"
 echo "Native messaging host $HOST_NAME has been uninstalled."

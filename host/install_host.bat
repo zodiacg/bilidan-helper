@@ -1,1 +1,1 @@
-REG ADD "HKLM\Software\Google\Chrome\NativeMessagingHosts\com.hoodoo.bilidan-helper" /ve /t REG_SZ /d "%~dp0com.hoodoo.bilidan-helper-win.json" /f
+REG ADD "HKCU\Software\Google\Chrome\NativeMessagingHosts\com.hoodoo.bilidanhelper" /ve /t REG_SZ /d "%~dp0com.hoodoo.bilidanhelper_win.json" /f

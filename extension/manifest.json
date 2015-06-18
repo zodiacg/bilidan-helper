@@ -15,7 +15,7 @@
 },
 "content_scripts": [{
     "all_frames": true,
-    "js": ["injected.js"],
+    "js": ["jquery-2.1.4.min.js","injected.js"],
 	"matches": [ "*://*.bilibili.com/video/*" ],
     "run_at": "document_start"
 }],

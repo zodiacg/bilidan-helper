@@ -17,7 +17,7 @@ else
     TARGET_DIR="$HOME/.config/google-chrome/NativeMessagingHosts"
   fi
 fi
-HOST_NAME=com.hoodoo.bilidan-helper
+HOST_NAME=com.hoodoo.bilidanhelper
 # Create directory to store native messaging host.
 mkdir -p "$TARGET_DIR"
 # Copy native messaging host manifest.
