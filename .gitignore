@@ -1,2 +1,3 @@
 host/bin
 host/mpv
+host/scripts/__pycache__
