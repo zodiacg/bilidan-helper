@@ -5,7 +5,7 @@
 	function invoke_bilidan(){
 		var msg = {};
 		msg.command = "open";
-		if (bh_options.use_cookie === false) {
+		if (bh_options.use_cookie) {
 			msg.cookie=document.cookie;
 		}else{
 			msg.cookie="";

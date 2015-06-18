@@ -3,18 +3,24 @@ var defaultOptions = {
     "source": "default",
     "d2aflags": "",
     "mpvflags": "",
-    "quality": 4
+    "quality": 0
 }
 
 function getOption(key) {
-    if (localStorage.getItem(key) === null) {
-        localStorage.setItem(key, defaultOptions[key]);
+    if (localStorage.getItem("options") === null) {
+        localStorage.setItem("options", JSON.stringify(defaultOptions));
     }
-    return localStorage.getItem(key);
+    var config = JSON.parse(localStorage.getItem("options"));
+    return config[key];
 }
 
 function setOption(key, value) {
-    localStorage.setItem(key, value);
+    if (localStorage.getItem("options") === null) {
+        localStorage.setItem("options", JSON.stringify(defaultOptions));
+    }
+    var config = JSON.parse(localStorage.getItem("options"));
+    config[key]=value;
+    localStorage.setItem("options", JSON.stringify(config));    
 }
 
 
