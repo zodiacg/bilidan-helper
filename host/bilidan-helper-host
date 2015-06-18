@@ -48,6 +48,7 @@ def read_msg():
   
   
 def Main():
+  os.chdir(os.path.split(os.path.realpath(__file__))[0]);
   read_msg();
   sys.exit(0);
   
