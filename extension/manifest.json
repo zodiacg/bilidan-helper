@@ -1,23 +1,28 @@
 {
-"name": "BiliDan-Helper",
-"version": "0.0.1",
-"manifest_version": 2,
-"description": "A tool to help invoke BiliDan from browser. This extension requires native host to work properly.",
-"permissions":[
-    "nativeMessaging",
-    "storage",
-    "contextMenus",
-    "http://*.bilibili.com/"
-],
-"background": {
-    "page": "background.html",
-    "persistent": true
-},
-"content_scripts": [{
-    "all_frames": true,
-    "js": ["jquery-2.1.4.min.js","injected.js"],
-	"matches": [ "*://*.bilibili.com/video/*" ],
-    "run_at": "document_start"
-}],
-"options_page": "options.html"
+    "name": "BiliDan-Helper",
+    "version": "0.8.1",
+    "manifest_version": 2,
+    "description": "A tool to help invoke BiliDan from browser. This extension requires native host to work properly.",
+    "icons": {
+        "128": "imgs/logo-128.png",
+        "32": "imgs/logo-32.png",
+        "16": "imgs/logo-16.png"
+    },
+    "permissions":[
+        "nativeMessaging",
+        "storage",
+        "contextMenus",
+        "http://*.bilibili.com/"
+    ],
+    "background": {
+        "page": "background.html",
+        "persistent": true
+    },
+    "content_scripts": [{
+        "all_frames": true,
+        "js": ["jquery-2.1.4.min.js","injected.js"],
+        "matches": [ "*://*.bilibili.com/video/*" ],
+        "run_at": "document_start"
+    }],
+    "options_page": "options.html"
 }
