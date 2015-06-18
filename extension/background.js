@@ -7,24 +7,16 @@ var defaultOptions = {
 }
 
 function getOption(key) {
-	if (localStorage.getItem(key) === null) {
-		localStorage.setItem(key, defaultOptions[key]);
-	}
-	return localStorage.getItem(key);
+    if (localStorage.getItem(key) === null) {
+        localStorage.setItem(key, defaultOptions[key]);
+    }
+    return localStorage.getItem(key);
 }
 
 function setOption(key, value) {
-	localStorage.setItem(key, value);
+    localStorage.setItem(key, value);
 }
 
-function onNativeMessage(message) {
-  console.log("Received message: <b>" + JSON.stringify(message) + "</b>");
-}
-
-function onDisconnected() {
-  console.log("Failed to connect: " + chrome.runtime.lastError.message);
-  port = null;
-}
 
 function open_bilidan(url,cookie) {
 	console.log("invoked open");
@@ -42,7 +34,7 @@ function open_bilidan(url,cookie) {
     chrome.runtime.sendNativeMessage("com.hoodoo.bilidanhelper",
 		bilidan_args,
 		function(response){
-			console.log("Bilidan-Helper Host returned: " + response);
+			console.log("Bilidan-Helper Host returned: " + JSON.stringify(response));
 		});
 };
 

@@ -3,31 +3,49 @@
 import struct
 import sys
 import os
+import json
+import subprocess
 
 if sys.platform == "win32":
-  import os, msvcrt
+  import msvcrt
   msvcrt.setmode(sys.stdin.fileno(), os.O_BINARY)
   msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
 
 def send_message(message):
    # Write message size.
-  sys.stdout.write(struct.pack('I', len(message)))
+  sys.stdout.buffer.write(struct.pack('I', len(message)))
   # Write the message itself.
   sys.stdout.write(message)
   sys.stdout.flush()
 
+def invoke_bilidan(param):
+  dict_param = json.loads(param)
+  command_line = ['python','scripts/bilidan.py']
+  if dict_param['use_cookie'] == True:
+    command_line += ['-c', dict_param['cookie']]
+  if dict_param['source'] != 'default':
+    command_line += ['-s', dict_param['source']]
+  if dict_param['d2aflags'] != '':
+    command_line += ['--d2aflags', dict_param['d2aflags']]
+  if dict_param['mpvflags'] != '':
+    command_line += ['--mpvflags', dict_param['mpvflags']]
+  if dict_param['quality'] != 0:
+    command_line += ['-q', dict_param['quality']]
+  command_line.append(dict_param['url'])
+  subprocess.Popen(command_line)
+
 def read_msg():
   # Read the message length (first 4 bytes).
-  text_length_bytes = sys.stdin.read(4)
+  text_length_bytes = sys.stdin.buffer.read(4)
   if len(text_length_bytes) == 0:
     sys.exit(0)
   # Unpack message length as 4 byte integer.
   text_length = struct.unpack('i', text_length_bytes)[0]
   # Read the text (JSON object) of the message.
-  text = sys.stdin.read(text_length).decode('utf-8')
-  
+  text = sys.stdin.buffer.read(text_length).decode('utf-8')
+  invoke_bilidan(text);
   send_message('{"echo": %s}' % text)
-  os.startfile('notepad.exe')
+  
   
 def Main():
   read_msg();
