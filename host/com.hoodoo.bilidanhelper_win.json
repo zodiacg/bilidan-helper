@@ -4,6 +4,6 @@
   "path": "bilidan-helper-host.bat",
   "type": "stdio",
   "allowed_origins": [
-    "chrome-extension://agdafnaifgfimanjefpehhgiijipggln/"
+    "chrome-extension://pfmilpmgppmdjkcbpiodncmnnnahejmf/"
   ]
 }
