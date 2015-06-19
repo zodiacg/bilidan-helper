@@ -20,7 +20,10 @@ def send_message(message):
 
 def invoke_bilidan(param):
   dict_param = json.loads(param)
-  command_line = ['python3','scripts/bilidan.py']
+  if sys.platform == "win32":
+    command_line = ['bilidan']
+  else:
+    command_line = ['python3','scripts/bilidan.py']
   if dict_param['use_cookie'] == True:
     command_line += ['-c', dict_param['cookie']]
   if dict_param['source'] != 'default':
@@ -46,9 +49,12 @@ def read_msg():
   invoke_bilidan(text);
   send_message('{"echo": %s}' % text)
   
-  
 def Main():
-  os.chdir(os.path.split(os.path.realpath(__file__))[0]);
+  if getattr(sys, 'frozen', False):
+    dir = os.path.split(os.path.realpath(sys.executable))[0]
+  else:
+    dir = os.path.split(os.path.realpath(__file__))[0]
+  os.chdir(dir);
   read_msg();
   sys.exit(0);
   
