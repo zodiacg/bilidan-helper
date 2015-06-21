@@ -11,31 +11,40 @@ if sys.platform == "win32":
   msvcrt.setmode(sys.stdin.fileno(), os.O_BINARY)
   msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
 
-def send_message(message):
-   # Write message size.
-  sys.stdout.buffer.write(struct.pack('I', len(message)))
-  # Write the message itself.
-  sys.stdout.write(message)
+def send_message(command,msg):
+  message = {'command':command,'msg':msg}
+  json_msg = json.dumps(message)
+  sys.stdout.buffer.write(struct.pack('I', len(json_msg)))
+  sys.stdout.write(json_msg)
   sys.stdout.flush()
 
+def message_handler(message):
+  dict_msg = json.loads(message)
+  if dict_msg['command'] == 'open':
+    invoke_bilidan(dict_msg['msg'])
+  elif dict_msg['command'] == 'ping':
+    send_message('echo','pong')
+  else:
+    send_message('echo','nani')
+
 def invoke_bilidan(param):
-  dict_param = json.loads(param)
   if sys.platform == "win32":
     command_line = ['bilidan']
   else:
     command_line = ['python3','scripts/bilidan.py']
-  if dict_param['use_cookie'] == True:
-    command_line += ['-c', dict_param['cookie']]
-  if dict_param['source'] != 'default':
-    command_line += ['-s', dict_param['source']]
-  if dict_param['d2aflags'] != '':
-    command_line += ['--d2aflags', dict_param['d2aflags']]
-  if dict_param['mpvflags'] != '':
-    command_line += ['--mpvflags', dict_param['mpvflags']]
-  if dict_param['quality'] != 0:
-    command_line += ['-q', dict_param['quality']]
-  command_line.append(dict_param['url'])
+  if param['use_cookie'] == True:
+    command_line += ['-c', param['cookie']]
+  if param['source'] != 'default':
+    command_line += ['-s', param['source']]
+  if param['d2aflags'] != '':
+    command_line += ['--d2aflags', param['d2aflags']]
+  if param['mpvflags'] != '':
+    command_line += ['--mpvflags', param['mpvflags']]
+  if param['quality'] != 0:
+    command_line += ['-q', param['quality']]
+  command_line.append(param['url'])
   subprocess.Popen(command_line)
+  send_message('echo',json.dumps(param))
 
 def read_msg():
   # Read the message length (first 4 bytes).
@@ -46,8 +55,7 @@ def read_msg():
   text_length = struct.unpack('i', text_length_bytes)[0]
   # Read the text (JSON object) of the message.
   text = sys.stdin.buffer.read(text_length).decode('utf-8')
-  invoke_bilidan(text);
-  send_message('{"echo": %s}' % text)
+  message_handler(text);
   
 def Main():
   if getattr(sys, 'frozen', False):
