@@ -29,7 +29,7 @@
         if(($("#o_quality").val() >= 0) && ($("#o_quality").val() <=4)){
             new_options.quality = $("#o_quality").val();
         }else{
-            alert("ÖÊÁ¿Ö»ÄÜÉèÖÃÎª0-4£¡");
+            alert("è§†é¢‘è´¨é‡è¯·å¡«å†™0-4ä¹‹é—´çš„æ•°å€¼");
             return;
         };
         
