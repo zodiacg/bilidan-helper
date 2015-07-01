@@ -23,7 +23,7 @@ def message_handler(message):
   if dict_msg['command'] == 'open':
     invoke_bilidan(dict_msg['msg'])
   elif dict_msg['command'] == 'ping':
-    send_message('echo','pong')
+    send_message('pong','')
   else:
     send_message('echo','nani')
 
@@ -44,7 +44,7 @@ def invoke_bilidan(param):
     command_line += ['-q', param['quality']]
   command_line.append(param['url'])
   subprocess.Popen(command_line)
-  send_message('echo',json.dumps(param))
+  send_message('succ',json.dumps(param))
 
 def read_msg():
   # Read the message length (first 4 bytes).
@@ -56,7 +56,7 @@ def read_msg():
   # Read the text (JSON object) of the message.
   text = sys.stdin.buffer.read(text_length).decode('utf-8')
   message_handler(text);
-  
+
 def Main():
   if getattr(sys, 'frozen', False):
     dir = os.path.split(os.path.realpath(sys.executable))[0]
@@ -65,6 +65,6 @@ def Main():
   os.chdir(dir);
   read_msg();
   sys.exit(0);
-  
+
 if __name__ == '__main__':
   Main()

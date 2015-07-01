@@ -1,5 +1,5 @@
 //(function(){
-    var bkg_page = chrome.extension.getBackgroundPage(); 
+    var bkg_page = chrome.extension.getBackgroundPage();
     var options = {};
     function reloadOptions(){
         options = {
@@ -9,7 +9,7 @@
             "mpvflags": bkg_page.getOption("mpvflags"),
             "quality": bkg_page.getOption("quality"),
         }
-        
+
         $("#o_use_cookie").attr("checked",options.use_cookie);
         $("#o_source").val(options.source);
         $("#o_d2aflags").val(options.d2aflags);
@@ -32,15 +32,33 @@
             alert("视频质量请填写0-4之间的数值");
             return;
         };
-        
+
         bkg_page.setOption("use_cookie",new_options.use_cookie);
         bkg_page.setOption("source",new_options.source);
         bkg_page.setOption("d2aflags",new_options.d2aflags);
         bkg_page.setOption("mpvflags",new_options.mpvflags);
         bkg_page.setOption("quality",new_options.quality);
-        
+
         reloadOptions();
-    }
+    };
+    function connectTest(){
+        chrome.runtime.sendMessage({command:"init_test"});
+    };
+    chrome.runtime.onMessage.addListener(
+        function(request,sender,sendResponse){
+            switch(request.command){
+                case "comp_test":
+                    if(request.msg==="succ"){
+                        alert("Host连接测试成功");
+                    }else if(request.msg==="fail"){
+                        alert("Host连接测试失败！请重新检查Host是否正常安装");
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    )
     $(document).ready(function(){
         $("#submit").click(saveOptions);
         $("#reset").click(reloadOptions);
