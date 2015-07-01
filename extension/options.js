@@ -62,6 +62,7 @@
     $(document).ready(function(){
         $("#submit").click(saveOptions);
         $("#reset").click(reloadOptions);
+        $("#conntest").click(connectTest);
         reloadOptions();
     });
 //})();
