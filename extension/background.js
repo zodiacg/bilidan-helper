@@ -25,15 +25,15 @@ function onNativeMessage(message){
             console.log("Connection test success");
             break;
         default:
-            if(testflag){
-                chrome.runtime.sendMessage({command:"comp_test",msg:"fail"});
-                testflag = false;
-            }
             console.log("Unrecognized command from NativeMessage" + message.command);
     }
 }
 
 function onDisconnected(){
+    if(testflag){
+        chrome.runtime.sendMessage({command:"comp_test",msg:"fail"});
+        testflag = false;
+    }
     console.log("Host disconnected");
     nmport = null;
 }
