@@ -1,7 +1,7 @@
 {
     "name": "BiliDan-Helper",
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmsK3tEU+aMYohe5zrXnpKODnZRhPx854kqTGOw2wuh5DXPxm0S4eNDGfHlvV7wpPSclgZ6zRfDIzzViMJq/S22BHmVEk0YACgwfGnDz27J2RQm+CYCWP9JAHaoRAh3VERZTs8fLFBtugipByMfJsR0HI52tpE/2aKBlbkKQZQr5B67J/s0uPEhVduCw9sBGPxDKW+E+vq54gFUEleYT+LGgSUM1PBEIGvKusPHFRP/mk7oR+sZVRN6kqrqCTSa690SNqhQ6FC2b0PsVrO9bDFDG6LSckyln80VP8WueVlzpOJSJADw99b3cVj4inQCZNoSKlB5tFXx4qz8Kx6QyTeQIDAQAB",
-    "version": "0.8.1",
+    "version": "0.9.0",
     "manifest_version": 2,
     "description": "A tool to help invoke BiliDan from browser. This extension requires native host to work properly.",
     "icons": {
