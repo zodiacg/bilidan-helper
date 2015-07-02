@@ -23,7 +23,7 @@ mkdir -p "$TARGET_DIR"
 # Copy native messaging host manifest.
 cp "$DIR/$HOST_NAME.json" "$TARGET_DIR"
 # Update host path in the manifest.
-HOST_PATH=$DIR/bilidan-helper-host
+HOST_PATH=$DIR/bin/bilidan-helper-host
 ESCAPED_HOST_PATH=${HOST_PATH////\\/}
 sed -i.t -e "s/HOST_PATH/$ESCAPED_HOST_PATH/" "$TARGET_DIR/$HOST_NAME.json"
 rm -f "$TARGET_DIR/$HOST_NAME.json.t"
