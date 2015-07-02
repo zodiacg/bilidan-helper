@@ -5,33 +5,39 @@ import sys
 import os
 import json
 import subprocess
+import logging
 
 if sys.platform == "win32":
   import msvcrt
   msvcrt.setmode(sys.stdin.fileno(), os.O_BINARY)
   msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
 
+
 def send_message(command,msg):
   message = {'command':command,'msg':msg}
+  logging.debug("Send message to browser: " + str(message))
   json_msg = json.dumps(message)
   sys.stdout.buffer.write(struct.pack('I', len(json_msg)))
   sys.stdout.write(json_msg)
   sys.stdout.flush()
 
 def message_handler(message):
+  logging.debug("Start handling message")
   dict_msg = json.loads(message)
+  logging.debug("Received msg: "+str(dict_msg))
   if dict_msg['command'] == 'open':
     invoke_bilidan(dict_msg['msg'])
   elif dict_msg['command'] == 'ping':
-    send_message('echo','pong')
+    send_message('pong','')
   else:
     send_message('echo','nani')
 
 def invoke_bilidan(param):
+  logging.debug("Parse param and invoke bilidan")
   if sys.platform == "win32":
     command_line = ['bilidan']
   else:
-    command_line = ['python3','scripts/bilidan.py']
+    command_line = ['python3','bilidan.py']
   if param['use_cookie'] == True:
     command_line += ['-c', param['cookie']]
   if param['source'] != 'default':
@@ -44,9 +50,12 @@ def invoke_bilidan(param):
     command_line += ['-q', param['quality']]
   command_line.append(param['url'])
   subprocess.Popen(command_line)
-  send_message('echo',json.dumps(param))
+  logging.info("Invoked Bilidan")
+  logging.debug("Invoked Bilidan with param: " + str(param))
+  send_message('succ',json.dumps(param))
 
 def read_msg():
+  logging.debug("Read from browser")
   # Read the message length (first 4 bytes).
   text_length_bytes = sys.stdin.buffer.read(4)
   if len(text_length_bytes) == 0:
@@ -56,15 +65,22 @@ def read_msg():
   # Read the text (JSON object) of the message.
   text = sys.stdin.buffer.read(text_length).decode('utf-8')
   message_handler(text);
-  
+
 def Main():
   if getattr(sys, 'frozen', False):
     dir = os.path.split(os.path.realpath(sys.executable))[0]
   else:
     dir = os.path.split(os.path.realpath(__file__))[0]
   os.chdir(dir);
+  logging.basicConfig(level=logging.DEBUG,
+  					  format='%(asctime)s line:%(lineno)d %(levelname)s %(message)s',
+                      datefmt='%d %b %Y %H:%M:%S',
+                      filename='bdh.log',
+                      filemode='a')
+  logging.info("BDH Start")
   read_msg();
+  logging.info("BDH Exit")
   sys.exit(0);
-  
+
 if __name__ == '__main__':
   Main()

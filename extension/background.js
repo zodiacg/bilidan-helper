@@ -7,13 +7,28 @@ var defaultOptions = {
 }
 
 var nmport = null;
+var testflag = false;
 
 function onNativeMessage(message){
     switch (message.command) {
         case 'echo':
             console.log("Host echo:" + message.msg);
             break;
+        case 'succ':
+            console.log("Successfully invoked bilidan with param:" + message.msg);
+            break;
+        case 'pong':
+            if(testflag){
+                chrome.runtime.sendMessage({command:"comp_test",msg:"succ"});
+                testflag = false;
+            }
+            console.log("Connection test success");
+            break;
         default:
+            if(testflag){
+                chrome.runtime.sendMessage({command:"comp_test",msg:"fail"});
+                testflag = false;
+            }
             console.log("Unrecognized command from NativeMessage" + message.command);
     }
 }
@@ -57,7 +72,7 @@ function open_bilidan(url,cookie) {
     console.log("invoked open");
     var bilidan_args={
         "use_cookie": getOption("use_cookie"),
-        "cookie": cookie,
+        "cookie": getOption("use_cookie")?cookie:"",
         "source": getOption("source"),
         "d2aflags": getOption("d2aflags"),
         "mpvflags": getOption("mpvflags"),
@@ -69,17 +84,18 @@ function open_bilidan(url,cookie) {
         "command": "open",
         "msg": bilidan_args
     }
-    
+
     send_message(req_msg);
 };
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.command) {
-        case 'init':
-            sendResponse({"use_cookie" : getOption("use_cookie")});
-            return true;
         case 'open':
             open_bilidan(request.url,request.cookie);
+            return true;
+        case 'init_test':
+            send_message({command:"ping",msg:""});
+            testflag = true;
             return true;
         default:
             return false;
