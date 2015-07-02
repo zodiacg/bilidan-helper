@@ -72,7 +72,7 @@ function open_bilidan(url,cookie) {
     console.log("invoked open");
     var bilidan_args={
         "use_cookie": getOption("use_cookie"),
-        "cookie": cookie,
+        "cookie": getOption("use_cookie")?cookie:"",
         "source": getOption("source"),
         "d2aflags": getOption("d2aflags"),
         "mpvflags": getOption("mpvflags"),
