@@ -1,7 +1,7 @@
 {
   "name": "com.hoodoo.bilidanhelper",
   "description": "Bilidan-Helper Host",
-  "path": "bilidan-helper-host.bat",
+  "path": "bdh-wrapper.bat",
   "type": "stdio",
   "allowed_origins": [
     "chrome-extension://pfmilpmgppmdjkcbpiodncmnnnahejmf/"
