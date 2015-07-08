@@ -13,6 +13,7 @@
         "nativeMessaging",
         "storage",
         "contextMenus",
+        activeTab,
         "http://*.bilibili.com/"
     ],
     "background": {

@@ -67,6 +67,14 @@ function setOption(key, value) {
     localStorage.setItem("options", JSON.stringify(config));
 }
 
+function onCMClicked(info,tab) {
+    var url=info.linkUrl;
+    var cookie;
+    chrome.tabs.executeScript(tab.id,{code:"document.cookie"},function(result){
+        cookie=result;
+    });
+    open_bilidan(url,cookie);
+}
 
 function open_bilidan(url,cookie) {
     console.log("invoked open");
@@ -87,6 +95,15 @@ function open_bilidan(url,cookie) {
 
     send_message(req_msg);
 };
+
+chrome.contextMenus.create({
+    id:"BDH",
+    title:"Play in BiliDan",
+    contexts:['link'],
+    targetUrlPatterns:["*://*.bilibili.com/video/av*","*://acg.tv/av*"]
+})
+
+chrome.contextMenus.onClicked.addListener(onCMClicked);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.command) {
