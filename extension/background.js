@@ -3,7 +3,7 @@ var defaultOptions = {
     "source": "default",
     "d2aflags": "",
     "mpvflags": "",
-    "quality": 0
+    "quality": 4
 }
 
 var nmport = null;
@@ -15,14 +15,21 @@ function onNativeMessage(message){
             console.log("Host echo:" + message.msg);
             break;
         case 'succ':
-            console.log("Successfully invoked bilidan with param:" + message.msg);
+//            console.log("Successfully invoked bilidan with param:" + message.msg);
+            chrome.notifications.create("successNotif",{
+                type: "basic",
+                title: "BiliDan-Helper",
+                message: "成功使用BiliDan打开视频",
+                iconUrl: "imgs/logo-96.png"
+            });
             break;
         case 'pong':
             if(testflag){
                 chrome.runtime.sendMessage({command:"comp_test",msg:"succ"});
                 testflag = false;
+                nmport = null;
             }
-            console.log("Connection test success");
+//            console.log("Connection test success");
             break;
         default:
             console.log("Unrecognized command from NativeMessage" + message.command);
@@ -30,11 +37,7 @@ function onNativeMessage(message){
 }
 
 function onDisconnected(){
-    if(testflag){
-        chrome.runtime.sendMessage({command:"comp_test",msg:"fail"});
-        testflag = false;
-    }
-    console.log("Host disconnected");
+//    console.log("Host disconnected");
     nmport = null;
 }
 
@@ -50,6 +53,27 @@ function send_message(message){
     nmport.postMessage(message);
 }
 
+function connection_test(){
+    testflag = true;
+    var host_name = "com.hoodoo.bilidanhelper";
+    nmport = chrome.runtime.connectNative(host_name);
+    nmport.onMessage.addListener(onNativeMessage);
+    nmport.postMessage({command:"ping",msg:""});
+    setTimeout(test_send,3000);
+}
+
+function test_send(){
+    if(testflag){
+    try{
+        nmport.postMessage({command:"ping",msg:""});
+    }catch(e){
+//        console.log("Connection test fail");
+        chrome.runtime.sendMessage({command:"comp_test",msg:"fail_nohost"});
+    }
+    }
+    testflag = false;
+    nmport = null;
+}
 function getOption(key) {
     if (localStorage.getItem("options") === null) {
         localStorage.setItem("options", JSON.stringify(defaultOptions));
@@ -67,9 +91,17 @@ function setOption(key, value) {
     localStorage.setItem("options", JSON.stringify(config));
 }
 
+function onCMClicked(info,tab) {
+    var url=info.linkUrl;
+    var cookie;
+    chrome.tabs.executeScript(tab.id,{code:"document.cookie"},function(result){
+        cookie=result;
+    });
+    open_bilidan(url,cookie);
+}
 
 function open_bilidan(url,cookie) {
-    console.log("invoked open");
+//    console.log("invoked open");
     var bilidan_args={
         "use_cookie": getOption("use_cookie"),
         "cookie": getOption("use_cookie")?cookie:"",
@@ -88,14 +120,22 @@ function open_bilidan(url,cookie) {
     send_message(req_msg);
 };
 
+chrome.contextMenus.create({
+    id:"BDH",
+    title:"使用BiliDan播放",
+    contexts:['link'],
+    targetUrlPatterns:["*://*.bilibili.com/video/av*","*://acg.tv/av*"]
+})
+
+chrome.contextMenus.onClicked.addListener(onCMClicked);
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.command) {
         case 'open':
             open_bilidan(request.url,request.cookie);
             return true;
         case 'init_test':
-            send_message({command:"ping",msg:""});
-            testflag = true;
+            connection_test();
             return true;
         default:
             return false;
