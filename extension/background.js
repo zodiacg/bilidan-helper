@@ -3,7 +3,7 @@ var defaultOptions = {
     "source": "default",
     "d2aflags": "",
     "mpvflags": "",
-    "quality": 0
+    "quality": 4
 }
 
 var nmport = null;
@@ -30,10 +30,6 @@ function onNativeMessage(message){
 }
 
 function onDisconnected(){
-    if(testflag){
-        chrome.runtime.sendMessage({command:"comp_test",msg:"fail"});
-        testflag = false;
-    }
     console.log("Host disconnected");
     nmport = null;
 }
@@ -50,6 +46,26 @@ function send_message(message){
     nmport.postMessage(message);
 }
 
+function connection_test(){
+    testflag = true;
+    var host_name = "com.hoodoo.bilidanhelper";
+    nmport = chrome.runtime.connectNative(host_name);
+    nmport.onMessage.addListener(onNativeMessage);
+    setTimeout(test_send,3000);
+}
+
+function test_send(){
+    if(testflag){
+    try{
+        nmport.postMessage({command:"ping",msg:""});
+    }catch(e){
+        console.log("connection_test fail");
+        chrome.runtime.sendMessage({command:"comp_test",msg:"fail_nohost"});
+        testflag = false;
+        nmport = null;
+    }
+    }
+}
 function getOption(key) {
     if (localStorage.getItem("options") === null) {
         localStorage.setItem("options", JSON.stringify(defaultOptions));
@@ -111,8 +127,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             open_bilidan(request.url,request.cookie);
             return true;
         case 'init_test':
-            send_message({command:"ping",msg:""});
-            testflag = true;
+            connection_test();
             return true;
         default:
             return false;

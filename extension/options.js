@@ -1,4 +1,4 @@
-//(function(){
+(function(){
     var bkg_page = chrome.extension.getBackgroundPage();
     var options = {};
     function reloadOptions(){
@@ -50,8 +50,10 @@
                 case "comp_test":
                     if(request.msg==="succ"){
                         alert("Host连接测试成功");
-                    }else if(request.msg==="fail"){
-                        alert("Host连接测试失败！请重新检查Host是否正常安装");
+                    }else if(request.msg==="fail_nohost"){
+                        alert("Host连接测试失败！Host未正常安装");
+                    }else if(request.msg==="fail_msg"){
+                        alert("Host连接测试失败！Host工作不正常");
                     }
                     return true;
                 default:
@@ -65,6 +67,6 @@
         $("#conntest").click(connectTest);
         reloadOptions();
     });
-//})();
+})();
 
 
