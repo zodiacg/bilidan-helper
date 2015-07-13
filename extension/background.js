@@ -21,6 +21,7 @@ function onNativeMessage(message){
             if(testflag){
                 chrome.runtime.sendMessage({command:"comp_test",msg:"succ"});
                 testflag = false;
+                nmport = null;
             }
             console.log("Connection test success");
             break;
@@ -51,6 +52,7 @@ function connection_test(){
     var host_name = "com.hoodoo.bilidanhelper";
     nmport = chrome.runtime.connectNative(host_name);
     nmport.onMessage.addListener(onNativeMessage);
+    nmport.postMessage({command:"ping",msg:""});
     setTimeout(test_send,3000);
 }
 
@@ -59,12 +61,12 @@ function test_send(){
     try{
         nmport.postMessage({command:"ping",msg:""});
     }catch(e){
-        console.log("connection_test fail");
+        console.log("Connection test fail");
         chrome.runtime.sendMessage({command:"comp_test",msg:"fail_nohost"});
-        testflag = false;
-        nmport = null;
     }
     }
+    testflag = false;
+    nmport = null;
 }
 function getOption(key) {
     if (localStorage.getItem("options") === null) {
