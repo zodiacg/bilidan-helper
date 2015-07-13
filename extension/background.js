@@ -20,7 +20,7 @@ function onNativeMessage(message){
                 type: "basic",
                 title: "BiliDan-Helper",
                 message: "成功使用BiliDan打开视频",
-                iconUrl: "imgs/logo-96.png"
+                iconUrl: "imgs/logo-128.png"
             });
             break;
         case 'pong':
