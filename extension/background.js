@@ -15,7 +15,7 @@ function onNativeMessage(message){
             console.log("Host echo:" + message.msg);
             break;
         case 'succ':
-            console.log("Successfully invoked bilidan with param:" + message.msg);
+//            console.log("Successfully invoked bilidan with param:" + message.msg);
             chrome.notifications.create("successNotif",{
                 type: "basic",
                 title: "BiliDan-Helper",
@@ -29,7 +29,7 @@ function onNativeMessage(message){
                 testflag = false;
                 nmport = null;
             }
-            console.log("Connection test success");
+//            console.log("Connection test success");
             break;
         default:
             console.log("Unrecognized command from NativeMessage" + message.command);
@@ -37,7 +37,7 @@ function onNativeMessage(message){
 }
 
 function onDisconnected(){
-    console.log("Host disconnected");
+//    console.log("Host disconnected");
     nmport = null;
 }
 
@@ -67,7 +67,7 @@ function test_send(){
     try{
         nmport.postMessage({command:"ping",msg:""});
     }catch(e){
-        console.log("Connection test fail");
+//        console.log("Connection test fail");
         chrome.runtime.sendMessage({command:"comp_test",msg:"fail_nohost"});
     }
     }
@@ -101,7 +101,7 @@ function onCMClicked(info,tab) {
 }
 
 function open_bilidan(url,cookie) {
-    console.log("invoked open");
+//    console.log("invoked open");
     var bilidan_args={
         "use_cookie": getOption("use_cookie"),
         "cookie": getOption("use_cookie")?cookie:"",
