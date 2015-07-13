@@ -6,7 +6,7 @@
     "description": "A tool to help invoke BiliDan from browser. This extension requires native host to work properly.",
     "icons": {
         "128": "imgs/logo-128.png",
-        "32": "imgs/logo-32.png",
+        "48": "imgs/logo-48.png",
         "16": "imgs/logo-16.png"
     },
     "permissions":[
@@ -14,6 +14,7 @@
         "storage",
         "contextMenus",
         "activeTab",
+        "notifications",
         "http://*.bilibili.com/"
     ],
     "background": {

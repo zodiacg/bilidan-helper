@@ -16,6 +16,12 @@ function onNativeMessage(message){
             break;
         case 'succ':
             console.log("Successfully invoked bilidan with param:" + message.msg);
+            chrome.notifications.create("successNotif",{
+                type: "basic",
+                title: "BiliDan-Helper",
+                message: "成功使用BiliDan打开视频",
+                iconUrl: "imgs/logo-96.png"
+            });
             break;
         case 'pong':
             if(testflag){
@@ -116,7 +122,7 @@ function open_bilidan(url,cookie) {
 
 chrome.contextMenus.create({
     id:"BDH",
-    title:"Play in BiliDan",
+    title:"使用BiliDan播放",
     contexts:['link'],
     targetUrlPatterns:["*://*.bilibili.com/video/av*","*://acg.tv/av*"]
 })
