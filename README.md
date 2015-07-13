@@ -13,7 +13,7 @@ BiliDan-Helper正处于开发中，功能尚不完善。
 
 ##使用
 * 打开B站任意投稿页面，视频播放器下方会出现标有“BDH”的按钮，点击即可启动BiliDan观看视频
-* (TODO)在B站右击任意投稿，点击“使用BiliDan观看”
+* 在B站右击任意投稿，点击“使用BiliDan观看”
 
 ##配置
 打开Chrome的“扩展程序”页面，点击BiliDan-Helper下的“选项”以打开选项页面。在其中可以调整BiliDan-Helper的各项设置。
