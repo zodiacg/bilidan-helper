@@ -47,7 +47,7 @@ def invoke_bilidan(param):
   if param['mpvflags'] != '':
     command_line += ['--mpvflags', param['mpvflags']]
   if param['quality'] != 0:
-    command_line += ['-q', param['quality']]
+    command_line += ['-q', str(param['quality'])]
   command_line.append(param['url'])
   subprocess.Popen(command_line)
   logging.info("Invoked Bilidan")
